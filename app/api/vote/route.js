@@ -1,12 +1,24 @@
-import puppeteer from 'puppeteer'
+// import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda';
 import { NextResponse } from 'next/server'
 
 export async function POST (request) {
   try {
-    const participant = 'emmanuel'
+    const participant = 'samuel'
 
     // Launch Puppeteer browser
-    const browser = await puppeteer.launch({ headless: true })
+    // const browser = await puppeteer.launch({ headless: true })
+
+     // Launch Puppeteer browser using chrome-aws-lambda
+     const browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+    });
+
+
+
     const page = await browser.newPage()
 
     // Navigate to the Google form or voting page

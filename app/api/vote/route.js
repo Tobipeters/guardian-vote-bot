@@ -1,40 +1,38 @@
-// import puppeteer from 'puppeteer'
-import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda'
 import { NextResponse } from 'next/server'
 
 export async function POST (request) {
   try {
-    const participant = 'samuel'
+    const participant = 'Ray'
 
     // Launch Puppeteer browser
     // const browser = await puppeteer.launch({ headless: true })
 
-     // Launch Puppeteer browser using chrome-aws-lambda
-     const browser = await chromium.puppeteer.launch({
+    // Launch Puppeteer browser using chrome-aws-lambda
+    const browser = await chromium.puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-    });
-
-
+      headless: chromium.headless
+    })
 
     const page = await browser.newPage()
 
     // Navigate to the Google form or voting page
     await page.goto(
-      // 'https://docs.google.com/forms/d/e/1FAIpQLSewwQ1Qodt0RMuJTUvma5zwZ7Dt_OycbCzfGKPNHwIh4A9EJg/viewform',
+      'https://docs.google.com/forms/d/e/1FAIpQLSewwQ1Qodt0RMuJTUvma5zwZ7Dt_OycbCzfGKPNHwIh4A9EJg/viewform',
 
       // test link
-      'https://docs.google.com/forms/d/e/1FAIpQLSeWgS74Ad3brGCV6oxZtDcMqWR8R4V5bCNGpGDNzqglpTjYog/viewform',
+      // 'https://docs.google.com/forms/d/e/1FAIpQLSeWgS74Ad3brGCV6oxZtDcMqWR8R4V5bCNGpGDNzqglpTjYog/viewform',
       { waitUntil: 'networkidle2' }
     )
 
     // Search for the input with the matching aria-label and click on it
-    // const participantSelector = `[aria-label="University Of Lagos: ${participant}"]`
+    const participantSelector = `[aria-label="University Of Lagos: ${participant}"]`
 
     // test
-    const participantSelector = `[aria-label="${participant}"]`
+    // const participantSelector = `[aria-label="${participant}"]`
     await page.click(participantSelector)
 
     // Click the submit button based on role="button" and label="Submit"

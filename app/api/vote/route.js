@@ -21,6 +21,9 @@ export async function POST(request) {
   let browser;
   let page;
 
+  const remoteExecutablePath =
+    "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
+
   const randomEmail = await fetchRandomEmail();
 
   try {

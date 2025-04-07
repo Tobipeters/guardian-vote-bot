@@ -48,7 +48,7 @@ export default function Home () {
 
     const intervalId = setInterval(() => {
       submitVote()
-    }, 30000) // try ti vote every 30s
+    }, 10000) // try to vote every 10s
 
     return () => clearInterval(intervalId)
   }, [])

@@ -4,6 +4,10 @@ import puppeteerCore from "puppeteer-core";
 // import chromium from 'chrome-aws-lambda'
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+const remoteExecutablePath =
+  "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
+
 // fetch a random user
 async function fetchRandomEmail() {
   const response = await fetch("https://randomuser.me/api/");
@@ -20,9 +24,6 @@ async function fetchRandomEmail() {
 export async function POST(request) {
   let browser;
   let page;
-
-  const remoteExecutablePath =
-    "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
 
   const randomEmail = await fetchRandomEmail();
 

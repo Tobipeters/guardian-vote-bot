@@ -10,16 +10,17 @@
   },
   "dependencies": {
     "chrome-aws-lambda": "^1.20.1",
-    "next": "^13.5.11",
+    "next": "latest",
     "puppeteer": "^24.6.0",
-    "puppeteer-core": "^24.6.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.25.9",
     "autoprefixer": "^10",
     "ignore-loader": "^0.1.2",
     "postcss": "^8",
+    "puppeteer-core": "^24.6.0",
     "tailwindcss": "^3"
   }
 }

@@ -1,6 +1,6 @@
 
 import puppeteer from 'puppeteer'
-import chromium from 'chrome-aws-lambda'
+// import chromium from 'chrome-aws-lambda'
 import { NextResponse } from 'next/server'
 
 // fetch a random user

@@ -1,56 +1,68 @@
+
 import puppeteer from 'puppeteer'
 import chromium from 'chrome-aws-lambda'
 import { NextResponse } from 'next/server'
 
+// fetch a random user
+async function fetchRandomEmail () {
+  const response = await fetch('https://randomuser.me/api/')
+  const data = await response.json()
+
+  const user = data.results[0]
+  const email = user.email
+
+  // Replace @example with @gmail.com
+  const username = email.split('@')[0]
+  return `${username}@gmail.com`
+}
+
 export async function POST (request) {
+  let browser
+  let page
+
+  const randomEmail = await fetchRandomEmail()
+
   try {
-    const participant = 'Ray'
+    // This runs the browser process in the background
+    const browser = await puppeteer.launch({ headless: true })
 
-    // Launch Puppeteer browser
-    // const browser = await puppeteer.launch({ headless: true })
+    // use this if you want the browser to keep opening so you can see the voting in action
+    // browser = await chromium.puppeteer.launch({
+    //   args: chromium.args,
+    //   defaultViewport: chromium.defaultViewport,
+    //   executablePath: await chromium.executablePath,
+    //   headless: chromium.headless
+    // })
 
-    // Launch Puppeteer browser using chrome-aws-lambda
-    const browser = await chromium.puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless
-    })
+    page = await browser.newPage()
 
-    const page = await browser.newPage()
-
-    // Navigate to the Google form or voting page
     await page.goto(
-      'https://docs.google.com/forms/d/e/1FAIpQLSewwQ1Qodt0RMuJTUvma5zwZ7Dt_OycbCzfGKPNHwIh4A9EJg/viewform',
-
-      // test link
-      // 'https://docs.google.com/forms/d/e/1FAIpQLSeWgS74Ad3brGCV6oxZtDcMqWR8R4V5bCNGpGDNzqglpTjYog/viewform',
-      { waitUntil: 'networkidle2' }
+      'https://riceuniversity.co1.qualtrics.com/jfe/form/SV_bIq5iYJz8sws2yi',
+      { waitUntil: 'networkidle2', timeout: 6000000 }
     )
 
-    // Search for the input with the matching aria-label and click on it
-    const participantSelector = `[aria-label="University Of Lagos: ${participant}"]`
+    // select the necessary elements
+    const emailSelector = 'input[type="text"]'
+    await page.waitForSelector(emailSelector)
+    await page.type(emailSelector, randomEmail)
 
-    // test
-    // const participantSelector = `[aria-label="${participant}"]`
+    const participantSelector = `[aria-labelledby="choice-display-QID2-19"]`
     await page.click(participantSelector)
 
-    // Click the submit button based on role="button" and label="Submit"
-    const submitButtonSelector = '[role="button"][aria-label="Submit"]'
-    await page.click(submitButtonSelector)
+    const buttonSelector = 'button'
+    await page.waitForSelector(buttonSelector)
+    await page.click(buttonSelector)
 
-    // Wait for the submission to complete
-    await page.waitForNavigation()
-
-    // Close the browser
-    await browser.close()
+    // await page.close() // ✅ close the tab
+    // await browser.close()
 
     return NextResponse.json({
       success: true,
-      message: `Vote for ${participant} submitted successfully!`
+      message: `Vote for The GUARDIAN submitted successfully with email ${randomEmail}`
     })
   } catch (error) {
-    console.error('Puppeteer error:', error)
+    if (page) await page.close().catch(() => {})
+    if (browser) await browser.close().catch(() => {})
 
     return NextResponse.json({
       success: false,

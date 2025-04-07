@@ -1,4 +1,6 @@
 import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium-min";
+import puppeteerCore from "puppeteer-core";
 // import chromium from 'chrome-aws-lambda'
 import { NextResponse } from "next/server";
 
@@ -22,8 +24,20 @@ export async function POST(request) {
   const randomEmail = await fetchRandomEmail();
 
   try {
+    if (browser) return browser;
     // This runs the browser process in the background
-    browser = await puppeteer.launch({ headless: true });
+    // Condition for development in vercel
+    if (process.env.NEXT_PUBLIC_VERCEL_ENVIRONMENT === "production") {
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        executablePath: await chromium.executablePath(remoteExecutablePath),
+        headless: true,
+      });
+    } else {
+      browser = await puppeteer.launch({
+        headless: true,
+      });
+    }
 
     // use this if you want the browser to keep opening so you can see the voting in action
     // browser = await chromium.puppeteer.launch({

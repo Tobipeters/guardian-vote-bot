@@ -1,4 +1,4 @@
-const { join } = requuire("path");
+const { join } = require("path");
 
 /**
  * @type

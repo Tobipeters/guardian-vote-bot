@@ -1,7 +1,6 @@
 import puppeteer from "puppeteer";
 import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
-// import chromium from 'chrome-aws-lambda'
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -45,14 +44,6 @@ export async function POST(request) {
         headless: true,
       });
     }
-
-    // use this if you want the browser to keep opening so you can see the voting in action
-    // browser = await chromium.puppeteer.launch({
-    //   args: chromium.args,
-    //   defaultViewport: chromium.defaultViewport,
-    //   executablePath: await chromium.executablePath,
-    //   headless: chromium.headless
-    // })
 
     page = await browser.newPage();
 

@@ -14,14 +14,13 @@
     "puppeteer": "^24.6.0",
     "react": "^18",
     "react-dom": "^18",
-    "tailwindcss": "3.3.2"
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8",
+    "autoprefixer": "^10"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-methods": "^7.25.9",
-    "autoprefixer": "^10",
     "ignore-loader": "^0.1.2",
-    "postcss": "^8",
-    "puppeteer-core": "^24.6.0",
-    "tailwindcss": "^3.4.17"
+    "puppeteer-core": "^24.6.0"
   }
 }

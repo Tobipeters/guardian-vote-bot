@@ -31,7 +31,10 @@ export async function POST(request) {
     if (browser) return browser;
     // This runs the browser process in the background
     // Condition for development in vercel
-    if (process.env.NEXT_PUBLIC_VERCEL_ENVIRONMENT === "production") {
+    if (
+      process.env.NODE_ENV === "production" ||
+      process.env.VERCEL_ENV === "production"
+    ) {
       browser = await puppeteerCore.launch({
         args: chromium.args,
         executablePath: await chromium.executablePath(remoteExecutablePath),
